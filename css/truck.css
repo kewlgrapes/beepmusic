@@ -1,0 +1,22 @@
+/*
+beepmusic.css
+  Nick Becker
+  16 January, 2016
+*/
+
+body {
+  background-color: #EBF2F8;
+  padding: 0px;
+}
+
+#header {
+  padding-top: 20px;
+}
+
+#header, #content {
+  background-color: white;
+}
+
+.margin-bottom {
+  margin-bottom: 3px;
+}

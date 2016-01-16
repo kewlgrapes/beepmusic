@@ -22,6 +22,10 @@ HOST = "127.0.0.1"
 PORT = 8000
 
 ###########################################################
+# HTML templates
+###########################################################
+
+###########################################################
 # custom HTTP server
 ###########################################################
 
@@ -41,10 +45,18 @@ class BeepHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     """
     Respond to an HTTP GET.
     """
-    self.send_response(200)
+    p = self.path.strip()
+    if p == "/":
+      self.send_response(200)
+      self.send_header("Content-type", "text/html")
+      self.end_headers()
+      return
+
+    # did not understand request
+    self.send_response(404)
     self.send_header("Content-type", "text/html")
     self.end_headers()
-    print self.path
+    self.wfile.write(PAGE404)
 
 ###########################################################
 # main program
