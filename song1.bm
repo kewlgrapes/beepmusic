@@ -1,0 +1,24 @@
+### mario theme
+
+# base note is middle C
+b261
+
+# 90 beats per minute
+t90
+
+# semitone offsets (for reference)
+# C3 -12   D3 -10   E3 -8   F3 -7   G3 -5   A3 -3   B3 -1
+# C4   0   D4   2   E4  4   F4  5   G4  7   A4  9   B4 11
+# C5  12   F5  14   E5 16   F5 17   G5 19   A5 21   B5 23
+# C6  24
+
+# each line is a measure
+s4 e4 s4 sr s0 e4 q7 q-5
+e.0 s-5 er e-8 sr e-3 s-1 sr s-2 e-3
+s.-5 s4 s7 e9 s5 s7 sr e4 s0 s2 e.-1
+e.0 s-5 er e-8 sr e-3 s-1 sr s-2 e-3
+s.-5 s4 s7 e9 s5 s7 sr e4 s0 s2 e.-1
+er s7 s6 s5 e3 s4 sr s-4 s-3 s0 sr s-3 s0 s2
+er s7 s6 s5 e3 s4 sr e12 s12 q12
+er s7 s6 s5 e3 s4 sr s-4 s-3 s0 sr s-3 s0 s2
+er e3 sr e2 sr q0 qr
