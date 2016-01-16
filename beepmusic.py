@@ -1,7 +1,9 @@
 #!/usr/bin/python
 """
 beepmusic.py
-Play music through the motherboard speaker.
+  Nick becker
+  14 August, 2015
+  Play music through the motherboard speaker.
 """
 import logging
 import os
