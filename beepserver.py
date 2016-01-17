@@ -11,7 +11,8 @@ import os
 import sys
 import threading
 
-from  BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
+from urlparse import parse_qs
+from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 
 from beepmusic import *
 
@@ -78,25 +79,33 @@ class BeepHandler(BaseHTTPRequestHandler):
     )
   }
 
-  # map resource name to python function for HTTP POSTS
+  # map resource name to python function and parameter names for HTTP POSTS
   ACTIONS = {
+    "beep": (
+      beep,
+      {"frequency": float, "duration":float}
+    ),
+    "pitch_index": (
+      pitch_index,
+      {"frequency": float}
+    ),
+    "pitch_offset": (
+      pitch_offset,
+      {"base": int, "offset": int}
+    ),
+    "play": (
+      play,
+      {"commands": list}
+    )
   }
   
-  def do_HEAD(self):
-    """
-    Build and send HTTP header.
-    """
-    self.send_response(200)
-    self.send_header("Content-type", "text/html")
-    self.end_headers()
-
   def send_resource(self, code, data_type, data):
     """
     Build and send an  HTML header with the specified code,
     then send the resource data.
     """
     self.send_response(code)
-    self.send_header("Content-type", "text/html")
+    self.send_header("Content-type", data_type)
     self.end_headers()
     self.wfile.write(data)
 
@@ -113,6 +122,7 @@ class BeepHandler(BaseHTTPRequestHandler):
         with open(r[0]) as f:
           self.send_resource(200, r[1], f.read())
         f.close()
+        logging.info("served %s" % self.path)
 
       else: 
         # resource not found
@@ -120,6 +130,7 @@ class BeepHandler(BaseHTTPRequestHandler):
         with open(r[0]) as f:
           self.send_resource(404, r[1], f.read())
         f.close()
+        logging.warn("served /404.html")
 
     except IOError as e:
       # hopefully the IO works this time...
@@ -127,6 +138,35 @@ class BeepHandler(BaseHTTPRequestHandler):
       with open(r[0]) as f:
         self.send_resource(500, r[1], f.read())
       f.close()
+      logging.error("served /500.html")
+
+  def do_POST(self):
+    """
+    Respond to an HTTPD POST.
+    """
+    # parse the POST data
+    content_length = int(self.headers["Content-Length"])
+    post_data = parse_qs(self.rfile.read(content_length).decode("utf-8"))
+
+    if "action" in post_data:
+      if post_data["action"][0] in self.ACTIONS:
+        # this is an action we can respond to
+        a = self.ACTIONS[post_data["action"][0]]
+
+        # reference to function to call
+        f = a[0]
+
+        # build kwargs and call function
+        kwargs = {}
+        for p, p_type in a[1].iteritems():
+          if p in post_data:
+            kwargs[p] = p_type(post_data[p][0])
+        f(**kwargs)
+        logging.info("responded to action: %s" % post_data["action"][0])
+      else:
+        logging.error("unknown action: %s" % post_data["action"])
+    else:
+      logging.error("malformed post_data: %s" % str(post_data))
 
 ###########################################################
 # main program
