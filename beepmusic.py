@@ -110,34 +110,19 @@ def play(in_file):
   # index of base pitch in PITCHES
   base = 0
 
-  # note durations
-  duration = {'s': 0, 'e': 0, 'q': 0, 'h': 0, 'w': 0}
+  # note durations for 60 bpm
+  duration = calc_durations(60)
 
   # group(0): entire match
-  # group(1): (s|e|q|h|w)({duration}|r)
+  # group(1): (s|e|q|h|w)(.)({duration}|r)
   # group(2): s|e|q|h|w
-  # group(3): {duration}|r
-  # group(4): b|t({pitch}|{tempo})
-  # group(5): b|t
-  # group(6): {pitch}|{tempo}
+  # group(3): .
+  # group(4): {duration}|r
+  # group(5): b|t({pitch}|{tempo})
+  # group(6): b|t
+  # group(7): {pitch}|{tempo}
   reg_command = re.compile(r'((s|e|q|h|w)(\.?)(-?\d+|r))|' # note or rest
                           + '((b|t)(-?\d+\.?\d*))')      # base or tempo
-  
-  # get list of commands
-  try:
-    with open(in_file, 'r') as f:
-      logging.info('opened %s for reading' % in_file)
-      lines = [l for l in f if not l.startswith('#')]
-      logging.info('read %d lines from %s' % (len(lines), in_file))
-    logging.info('closed %s' % in_file)
-  except Exception as e:
-    logging.error(str(e))
-    return
-
-  # incomprehensible list comprehension
-  commands = [w for words in [l.split() for l in lines] 
-                for w in words if w != '|']
-  logging.info('%s commands to process' % len(commands))
 
   # process the commands
   #logging.debug('\t' + '\t'.join([str(i) for i in range(8)]))
@@ -194,6 +179,23 @@ if __name__ == '__main__':
   if len(sys.argv) < 2:
     print 'usage: beepmusic <in_file>'
     sys.exit(1)
+  in_file = sys.argv[1]
+
+  # get list of commands
+  try:
+    with open(in_file, 'r') as f:
+      logging.info('opened %s for reading' % in_file)
+      lines = [l for l in f if not l.startswith('#')]
+      logging.info('read %d lines from %s' % (len(lines), in_file))
+    logging.info('closed %s' % in_file)
+  except Exception as e:
+    logging.error(str(e))
+    sys.exit(1)
+
+  # incomprehensible list comprehension
+  commands = [w for words in [l.split() for l in lines] 
+                for w in words if w != '|']
+  logging.info('%s commands to process' % len(commands))
 
   # play some beautiful music
   play(sys.argv[1])
