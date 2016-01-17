@@ -5,5 +5,5 @@ beepmusic.js
 */
 
 function initialize() {
-
+  alert("hi");
 };
