@@ -11,8 +11,6 @@ import re
 import sys
 import time
 
-logging.basicConfig(level=logging.DEBUG)
-
 ###########################################################
 # constants
 ###########################################################
@@ -41,7 +39,7 @@ BEEP_PATH = '/usr/bin/beep'
 # exceptions
 ###########################################################
 
-def PitchRangeException(Exception):
+class PitchRangeException(Exception):
   pass
 
 ###########################################################
@@ -81,11 +79,12 @@ def pitch_offset(base, offset):
 def calc_durations(tempo, style=None):
   """
   Calculate the note durations for sixteenth, eighth, quarter,
-  half, and whole notes for the given tempo in the given style.
-  Tempo is given in beats per minute
-  Durations are returned in milliseconds
+    half, and whole notes for the given tempo in the given style.
+  Tempo is given in beats per minute.
+  Durations are returned in milliseconds.
   """
-  q = 60.0 / tempo        # duration of quarter note
+  # duration of quarter note
+  q = 60.0 / tempo
   return {'s': q * 250,
           'e': q * 500,
           'q': q * 1000,
@@ -175,6 +174,8 @@ def play(commands):
 ###########################################################
 
 if __name__ == '__main__':
+  logging.basicConfig(level=logging.DEBUG)
+  
   # make sure input file is given
   if len(sys.argv) < 2:
     print 'usage: beepmusic <in_file>'
