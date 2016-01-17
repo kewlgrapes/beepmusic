@@ -1,1 +1,90 @@
-Someday I will put some meaningful documentation in this file.
+README
+  Nick Becker
+  17 January, 2006
+
+PURPOSE
+  beepmusic! is a tool that can be used to easily(?) play music using a
+  computer's PC speaker.  beepmusic! is inspired by solfège, a music
+  education method used to teach pitch and sight seeing. Solfège involves
+  assigning the notes of a scale a particular syllable (rather than note
+  names like C5 or F#7). beepmusic! files are notated using intervals
+  from a base pitch, making it trivial to transpose music to different keys.
+
+DEMO
+  Links to some demos of beepmusic! in action:
+    https://www.youtube.com/watch?v=qlGJK9cek8Q
+    https://www.youtube.com/watch?v=ArA3poj-Y_U
+
+USAGE
+  python beepmusic.py <in_file>
+    Reads and plays the song notated in <in_file>.
+
+  python beepserver.py
+    Brings up the beepmusic! server.
+    Server listens at 127.0.0.1:8000 (configurable).
+
+FILES
+  beepmusic.py
+    This file provides core functionality. 
+
+  song*.bm
+    These are some sample songs notated in the beepmusic! format.
+
+  beepserver.py
+    This file brings up the web-based frontend to beepmusic!.
+
+  resources/*
+    These are HTML/CSS/JS files used to display the web-based frontend.
+
+COMMAND FORMATS
+  Individual commands should be separated by whitespace (spaces, tabs, or
+  new line characters). beepmusic! will ignore any line starting with #.
+  Commands are case sensitive. See examples in song0.bm, song1.bm, 
+  and song2.bm.
+
+  b<frequency>
+    Sets the base pitch to <frequency>, given in hertz (Hz).
+
+  t<tempo>
+    Sets the tempo to <tempo> beats per minute (bpm).
+
+  w[.]<offset>
+    Emits a whole note (4 counts) at the pitch <offset> semitones from 
+    the base pitch. w can optionally be followed by a . to multiply the
+    note duration by 1.5x. <offset> can be positive, negative, or 0.
+
+  h[.]<offset>
+    Emits a half note (2 counts) at the pitch <offset> semitones from 
+    the base pitch.
+    
+  q[.]<offset>
+    Emits a quarter note (1 count) at the pitch <offset> semitones from 
+    the base pitch.
+    
+  e[.]<offset>
+    Emits an eighth note (1/2 count) at the pitch <offset> semitones from 
+    the base pitch.
+    
+  s[.]<offset>
+    Emits a sixteenth note (1/4 count) at the pitch <offset> semitones from 
+    the base pitch.
+    
+EXAMPLE
+  # song1.bm (Mario Theme)
+
+  # base note is middle C
+  b261
+
+  # 90 beats per minute
+  t90
+
+  # each line is a measure of music
+  s4 e4 s4 sr s0 e4 q7 q-5
+  e.0 s-5 er e-8 sr e-3 s-1 sr s-2 e-3
+  s.-5 s4 s7 e9 s5 s7 sr e4 s0 s2 e.-1
+  e.0 s-5 er e-8 sr e-3 s-1 sr s-2 e-3
+  s.-5 s4 s7 e9 s5 s7 sr e4 s0 s2 e.-1
+  er s7 s6 s5 e3 s4 sr s-4 s-3 s0 sr s-3 s0 s2
+  er s7 s6 s5 e3 s4 sr e12 s12 q12
+  er s7 s6 s5 e3 s4 sr s-4 s-3 s0 sr s-3 s0 s2
+  er e3 sr e2 sr q0 qr
