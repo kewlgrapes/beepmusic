@@ -92,7 +92,7 @@ def calc_durations(tempo, style=None):
           'h': q * 2000,
           'w': q * 4000}
 
-def play(in_file):
+def play(commands):
   """
   b{base}: set the base pitch to {base}
   t{tempo}: set the tempo to {tempo} bpm
@@ -122,7 +122,7 @@ def play(in_file):
   # group(6): b|t
   # group(7): {pitch}|{tempo}
   reg_command = re.compile(r'((s|e|q|h|w)(\.?)(-?\d+|r))|' # note or rest
-                          + '((b|t)(-?\d+\.?\d*))')      # base or tempo
+                          + '((b|t)(-?\d+\.?\d*))')        # base or tempo
 
   # process the commands
   #logging.debug('\t' + '\t'.join([str(i) for i in range(8)]))
@@ -198,4 +198,4 @@ if __name__ == '__main__':
   logging.info('%s commands to process' % len(commands))
 
   # play some beautiful music
-  play(sys.argv[1])
+  play(commands)
