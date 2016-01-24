@@ -10,4 +10,5 @@ import time
 from beepmusic import *
 
 while 1:
-  beep(random.randint(0, 20000), random.randint(50, 100))
+  beep(random.randint(50, 500), random.randint(1, 200))
+  time.sleep(random.randint(0, 5) / 10)
